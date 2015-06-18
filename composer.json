@@ -16,7 +16,7 @@
     "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
-            "Iatstuti\\": "src"
+            "Iatstuti\\": "src/"
         }
     }
 }
