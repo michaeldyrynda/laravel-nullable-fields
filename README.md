@@ -15,7 +15,7 @@ This trait is installed via [Composer](http://getcomposer.org/). To install, sim
 ```
 {
 	"require": {
-		"iatstuti/laravel-nullable-fields": "~1.0"
+		"iatstuti/laravel-nullable-fields": "~0.1"
 	}
 }
 ```
