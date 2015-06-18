@@ -2,6 +2,10 @@
 
 Often times, database fields that are not assigned values are defaulted to `null`. This is particularly important when creating records with foreign key constraints.
 
+Note, the database field must be configured to allow null.
+
+More recent versions of MySQL will convert the value to an empty string if the field is not configured to allow null. Be aware that older versions may actually return an error.
+
 Laravel (5.1) does not currently support automatically setting nullable database fields as `null` when the value assigned to a given attribute is empty.
 
 # Installation
@@ -49,9 +53,9 @@ Now, any time you are saving a `UserProfile` profile instance, any empty attribu
 <?php
 
 $profile = new UserProfile::find(1);
-$profile->facebook_profile = ' '; // Empty
+$profile->facebook_profile = ' '; // Empty, saved as null
 $profile->twitter_profile  = 'michaeldyrynda';
-$profile->linkedin_profile = '';  // Empty
+$profile->linkedin_profile = '';  // Empty, saved as null
 $profile->save();
 ```
 
