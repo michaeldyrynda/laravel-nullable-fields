@@ -1,0 +1,22 @@
+{
+    "name": "iatstuti/laravel-nullable-fields",
+    "description": "This trait allows you to easily flag attributes that should be set as null when being persisted to the database using the Laravel PHP Framework.",
+    "type": "utility",
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michael Dyrynda",
+            "email": "michael@iatstuti.net",
+            "homepage": "https://iatstuti.net"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "Iatstuti\\": "src/"
+        }
+    }
+}
