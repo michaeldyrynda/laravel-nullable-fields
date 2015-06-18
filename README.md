@@ -62,6 +62,7 @@ $profile->save();
 # More information
 
 [Working with nullable fields in Eloquent models](https://iatstuti.net/blog/working-with-nullable-fields-in-eloquent-models) - first iteration
+
 [Working with nullable fields in Eloquent models - Part Deux](https://iatstuti.net/blog/working-with-nullable-field-in-eloquent-models-part-deux) - second iteration, covers the details of this package
 
 # Support
