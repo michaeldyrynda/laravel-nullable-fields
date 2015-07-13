@@ -16,7 +16,6 @@ namespace Iatstuti\Database\Support;
  */
 trait NullableFields
 {
-
     /**
      * Boot the trait, add a saving observer.
      *
@@ -56,12 +55,10 @@ trait NullableFields
     protected function nullableFromArray(array $attributes = [ ])
     {
         if (count($this->nullable) > 0) {
-            return array_intersect_key  ($attributes, array_flip($this->nullable));
+            return array_intersect_key($attributes, array_flip($this->nullable));
         }
 
         // Assume no fields are nullable
         return [ ];
     }
-
-
 }
