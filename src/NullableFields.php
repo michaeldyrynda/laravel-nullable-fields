@@ -26,7 +26,7 @@ trait NullableFields
     {
         static::saving(function ($model) {
             foreach ($model->nullableFromArray($model->getAttributes()) as $column => $value) {
-                $model->setAttribute($column, $model->nullIfEmpty($value));
+                $model->attributes[$column] = $model->nullIfEmpty($value);
             }
         });
     }
