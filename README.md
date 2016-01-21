@@ -5,6 +5,8 @@
 
 Often times, database fields that are not assigned values are defaulted to `null`. This is particularly important when creating records with foreign key constraints, where the relationship is not yet established.
 
+As of version 1.0, this package also supports converting empty arrays to `null` in fields that are cast to an array, or not.
+
 Note, the database field must be configured to allow null.
 
 ```php
@@ -17,6 +19,8 @@ public function up()
         $table->string('twitter_profile')->nullable()->default(null);
         $table->string('facebook_profile')->nullable()->default(null);
         $table->string('linkedin_profile')->nullable()->default(null);
+        $table->text('array_casted')->nullable()->default(null);
+        $table->text('array_not_casted')->nullable()->default(null);
     });
 }
 ```
@@ -60,7 +64,11 @@ class UserProfile extends Model
 		'facebook_profile',
 		'twitter_profile',
 		'linkedin_profile',
+		'array_casted',
+		'array_not_casted',
 	];
+	
+	protected $casts = [ 'array_casted' => 'array', ];
 	
 }
 ```
@@ -74,6 +82,8 @@ $profile = new UserProfile::find(1);
 $profile->facebook_profile = ' '; // Empty, saved as null
 $profile->twitter_profile  = 'michaeldyrynda';
 $profile->linkedin_profile = '';  // Empty, saved as null
+$profile->array_casted = []; // Empty, saved as null
+$profile->array_not_casted = []; // Empty, saved as null
 $profile->save();
 ```
 
