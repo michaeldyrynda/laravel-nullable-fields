@@ -16,6 +16,7 @@ namespace Iatstuti\Database\Support;
  */
 trait NullableFields
 {
+
     /**
      * Boot the trait, add a saving observer.
      *
@@ -25,8 +26,8 @@ trait NullableFields
     protected static function bootNullableFields()
     {
         static::saving(function ($model) {
-            foreach ($model->nullableFromArray($model->getAttributes()) as $column => $value) {
-                $model->attributes[$column] = $model->nullIfEmpty($value);
+            foreach ($model->nullableFromArray($model->getAttributes()) as $key => $value) {
+                $model->attributes[$key] = $model->nullIfEmpty($value, $key);
             }
         });
     }
@@ -36,11 +37,20 @@ trait NullableFields
      * If value is empty, return null, otherwise return the original input.
      *
      * @param  string $value
+     * @param  null $key
      *
      * @return null|string
      */
-    protected function nullIfEmpty($value)
+    public function nullIfEmpty($value, $key = null)
     {
+        if (! is_null($key) && $this->isJsonCastable($key)) {
+            return empty($this->fromJson($value)) ? null : $value;
+        }
+
+        if (is_array($value)) {
+            return empty($value) ? null : $value;
+        }
+
         return trim($value) === '' ? null : $value;
     }
 
