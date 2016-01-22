@@ -1,5 +1,4 @@
 <?php
-use Iatstuti\Database\Support\NullableFields;
 
 class NullableFieldsTest extends PHPUnit_Framework_TestCase
 {
@@ -11,7 +10,7 @@ class NullableFieldsTest extends PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->nullable = $this->getObjectForTrait(NullableFields::class);
+        $this->nullable = $this->getObjectForTrait('Iatstuti\Database\Support\NullableFields');
     }
 
 
