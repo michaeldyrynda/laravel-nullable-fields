@@ -8,12 +8,10 @@ php:
   - nightly
 
 env:
-  - ILLUMINATE_VERSION=5.2.*
+  - ILLUMINATE_VERSION=5.0.*
 
 matrix:
   include:
-    - php: 5.4
-      env: ILLUMINATE_VERSION=5.0.*
     - php: 5.5.9
       env: ILLUMINATE_VERSION=5.1.*
     - php: 5.5.9

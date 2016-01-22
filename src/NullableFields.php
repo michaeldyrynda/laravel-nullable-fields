@@ -44,7 +44,9 @@ trait NullableFields
     public function nullIfEmpty($value, $key = null)
     {
         if (! is_null($key) && $this->isJsonCastable($key)) {
-            return empty($this->fromJson($value)) ? null : $value;
+            $value = $this->fromJson($value);
+
+            return empty($value) ? null : $value;
         }
 
         if (is_array($value)) {
