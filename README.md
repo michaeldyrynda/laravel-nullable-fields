@@ -1,13 +1,34 @@
 # Nullable database fields for the Laravel PHP Framework
-## v0.1.6
+## v1.0.0
 
-Often times, database fields that are not assigned values are defaulted to `null`. This is particularly important when creating records with foreign key constraints.
+![Travis Build Status](https://travis-ci.org/deringer/laravel-nullable-fields.svg?branch=master)
+
+Often times, database fields that are not assigned values are defaulted to `null`. This is particularly important when creating records with foreign key constraints, where the relationship is not yet established.
+
+As of version 1.0, this package also supports converting empty arrays to `null` in fields that are cast to an array, or not.
 
 Note, the database field must be configured to allow null.
 
+```php
+public function up()
+{
+    Schema::create('profile_user', function (Blueprint $table) {
+        $table->increments('id');
+        $table->integer('user_id')->nullable()->default(null);
+        $table->foreign('user_id')->references('users')->on('id'); 
+        $table->string('twitter_profile')->nullable()->default(null);
+        $table->string('facebook_profile')->nullable()->default(null);
+        $table->string('linkedin_profile')->nullable()->default(null);
+        $table->text('array_casted')->nullable()->default(null);
+        $table->text('array_not_casted')->nullable()->default(null);
+    });
+}
+```
+    
+
 More recent versions of MySQL will convert the value to an empty string if the field is not configured to allow null. Be aware that older versions may actually return an error.
 
-Laravel (5.1) does not currently support automatically setting nullable database fields as `null` when the value assigned to a given attribute is empty.
+Laravel does not currently support automatically setting nullable database fields as `null` when the value assigned to a given attribute is empty.
 
 # Installation
 
@@ -16,7 +37,7 @@ This trait is installed via [Composer](http://getcomposer.org/). To install, sim
 ```
 {
 	"require": {
-		"iatstuti/laravel-nullable-fields": "~0.1"
+		"iatstuti/laravel-nullable-fields": "~1.0"
 	}
 }
 ```
@@ -43,7 +64,11 @@ class UserProfile extends Model
 		'facebook_profile',
 		'twitter_profile',
 		'linkedin_profile',
+		'array_casted',
+		'array_not_casted',
 	];
+	
+	protected $casts = [ 'array_casted' => 'array', ];
 	
 }
 ```
@@ -57,6 +82,8 @@ $profile = new UserProfile::find(1);
 $profile->facebook_profile = ' '; // Empty, saved as null
 $profile->twitter_profile  = 'michaeldyrynda';
 $profile->linkedin_profile = '';  // Empty, saved as null
+$profile->array_casted = []; // Empty, saved as null
+$profile->array_not_casted = []; // Empty, saved as null
 $profile->save();
 ```
 
