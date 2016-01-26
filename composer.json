@@ -4,8 +4,8 @@
     "type": "utility",
     "require": {
         "php": ">=5.4",
-        "illuminate/database": "~5.0|~5.1|~5.2",
-        "illuminate/events": "~5.0|~5.1|~5.2"
+        "illuminate/database": "~5.0",
+        "illuminate/events": "~5.0"
     },
     "license": "MIT",
     "authors": [
