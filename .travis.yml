@@ -30,9 +30,9 @@ matrix:
       env: ILLUMINATE_VERSION=5.2.*
 
 before_install:
-  - composer require "illuminate/database:${ILLUMINATE_VERSION}" --no-update
-  - composer require "illuminate/events:${ILLUMINATE_VERSION}" --no-update
+  - composer require "illuminate/database:${ILLUMINATE_VERSION}" --no-update -v
+  - composer require "illuminate/events:${ILLUMINATE_VERSION}" --no-update -v
 
-install: composer update --prefer-source --no-interaction --dev
+install: composer update --prefer-source --no-interaction --dev -v
 
 script: vendor/bin/phpunit --debug -c phpunit.xml
