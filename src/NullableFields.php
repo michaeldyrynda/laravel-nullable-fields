@@ -58,6 +58,15 @@ trait NullableFields
 
 
     /**
+     * Determine whether a value is JSON castable for inbound manipulation.
+     *
+     * @param  string  $key
+     * @return bool
+     */
+    abstract protected function isJsonCastable($key);
+
+
+    /**
      * Get the nullable attributes of a given array.
      *
      * @param  array $attributes

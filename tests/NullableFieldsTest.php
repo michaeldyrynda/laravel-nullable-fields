@@ -10,7 +10,7 @@ class NullableFieldsTest extends PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->nullable = $this->getObjectForTrait('Iatstuti\Database\Support\NullableFields');
+        $this->nullable = $this->getMockForTrait('Iatstuti\Database\Support\NullableFields');
     }
 
 
