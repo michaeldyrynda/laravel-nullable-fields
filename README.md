@@ -1,7 +1,8 @@
 # Nullable database fields for the Laravel PHP Framework
-## v1.0.1
+## v1.0.2
 
 ![Travis Build Status](https://travis-ci.org/deringer/laravel-nullable-fields.svg?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/deringer/laravel-nullable-fields/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/deringer/laravel-nullable-fields/?branch=master)
 
 Often times, database fields that are not assigned values are defaulted to `null`. This is particularly important when creating records with foreign key constraints, where the relationship is not yet established.
 
