@@ -9,19 +9,12 @@ use Illuminate\Events\Dispatcher;
 class NullableFieldsIntegrationTest extends PHPUnit_Framework_TestCase
 {
 
-    protected static $dbname;
-
-
     public static function setUpBeforeClass()
     {
-        static::$dbname = dirname(__FILE__) . '/database.sqlite';
-
-        touch(static::$dbname);
-
         $manager = new Manager();
         $manager->addConnection([
             'driver'   => 'sqlite',
-            'database' => static::$dbname,
+            'database' => ':memory:',
         ]);
 
         $manager->setEventDispatcher(new Dispatcher(new Container()));
@@ -38,16 +31,16 @@ class NullableFieldsIntegrationTest extends PHPUnit_Framework_TestCase
             $table->text('array_not_casted')->nullable()->default(null);
         });
     }
-    
-    
+
+
     /** @test */
     public function it_sets_nullable_fields_to_null_when_saving()
     {
-        $user = new UserProfile;
+        $user                   = new UserProfile;
         $user->facebook_profile = ' ';
         $user->twitter_profile  = 'michaeldyrynda';
         $user->linkedin_profile = '';
-        $user->array_casted = [ ];
+        $user->array_casted     = [ ];
         $user->array_not_casted = [ ];
         $user->save();
 
@@ -77,18 +70,14 @@ class NullableFieldsIntegrationTest extends PHPUnit_Framework_TestCase
         $this->assertNull($user->array_casted);
         $this->assertNull($user->array_not_casted);
     }
-
-
-    public static function tearDownAfterClass()
-    {
-        unlink(static::$dbname);
-    }
 }
-
 
 class UserProfile extends Model
 {
+
     use NullableFields;
+
+    public $timestamps = false;
 
     protected $fillable = [
         'facebook_profile',
@@ -107,7 +96,5 @@ class UserProfile extends Model
     ];
 
     protected $casts = [ 'array_casted' => 'array', ];
-
-    public $timestamps = false;
 
 }
