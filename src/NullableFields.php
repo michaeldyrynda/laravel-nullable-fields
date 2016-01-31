@@ -9,8 +9,6 @@ namespace Iatstuti\Database\Support;
  * empty field values to null on. When saving, iterate over the model's
  * attributes and if their value is empty, make it null before save.
  *
- * @package    Iatstuti
- * @subpackage Database\Support
  * @copyright  2015 IATSTUTI
  * @author     Michael Dyrynda <michael@iatstuti.net>
  */
@@ -61,6 +59,7 @@ trait NullableFields
      * Determine whether a value is JSON castable for inbound manipulation.
      *
      * @param  string  $key
+     *
      * @return bool
      */
     abstract protected function isJsonCastable($key);
