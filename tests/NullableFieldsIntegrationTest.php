@@ -70,11 +70,25 @@ class NullableFieldsIntegrationTest extends PHPUnit_Framework_TestCase
         $this->assertNull($user->array_casted);
         $this->assertNull($user->array_not_casted);
     }
+
+
+    /** @test */
+    public function it_handles_calling_the_nullabe_fields_setter_manually()
+    {
+        $user = UserProfile::create([
+            'facebook_profile' => '',
+            'twitter_profile'  => '',
+            'linkedin_profile' => '',
+        ]);
+
+        $this->assertNull($user->facebook_profile);
+        $this->assertNull($user->twitter_profile);
+        $this->assertNull($user->linkedin_profile);
+    }
 }
 
 class UserProfile extends Model
 {
-
     use NullableFields;
 
     public $timestamps = false;
@@ -96,5 +110,39 @@ class UserProfile extends Model
     ];
 
     protected $casts = [ 'array_casted' => 'array', ];
+}
 
+
+class UserProfileSaving extends Model
+{
+    use NullableFields;
+
+    protected $table = 'user_profiles';
+
+    public $timestamps = false;
+
+    protected $fillable = [
+        'facebook_profile',
+        'twitter_profile',
+        'linkedin_profile',
+        'array_casted',
+        'array_not_casted',
+    ];
+
+    protected $nullable = [
+        'facebook_profile',
+        'twitter_profile',
+        'linkedin_profile',
+        'array_casted',
+        'array_not_casted',
+    ];
+
+    public static function boot()
+    {
+        static::saving(function ($model) {
+            // some other behaviour
+
+            $model->setNullableFields();
+        });
+    }
 }

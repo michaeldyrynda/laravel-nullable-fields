@@ -2,8 +2,6 @@
 
 namespace Iatstuti\Database\Support;
 
-use Illuminate\Database\Eloquent\Model;
-
 /**
  * Nullable (database) fields trait.
  *
@@ -11,12 +9,8 @@ use Illuminate\Database\Eloquent\Model;
  * empty field values to null on. When saving, iterate over the model's
  * attributes and if their value is empty, make it null before save.
  *
- * In the Model class $nullable properties should have to be defined as:
- *
- * protected $nullable = [];
- *
  * @copyright  2015 IATSTUTI
- * @author     Michael Dyrynda <michael@iatstuti.net>
+ * @author     Michael Dyrynda <michael@dyrynda.com.au>
  */
 trait NullableFields
 {
@@ -29,8 +23,8 @@ trait NullableFields
      */
     protected static function bootNullableFields()
     {
-        static::saving(function (Model $model) {
-            $model->setNullables();
+        static::saving(function ($model) {
+            $model->setNullableFields();
         });
     }
 
@@ -38,9 +32,11 @@ trait NullableFields
     /**
      * Set empty nullable fields to null.
      *
+     * @since  1.1.0
+     *
      * @return void
      */
-    protected function setNullables()
+    protected function setNullableFields()
     {
         foreach ($this->nullableFromArray($this->getAttributes()) as $key => $value) {
             $this->attributes[$key] = $this->nullIfEmpty($value, $key);
@@ -58,7 +54,7 @@ trait NullableFields
     public function nullIfEmpty($value, $key = null)
     {
         if (! is_null($key) && $this->isJsonCastable($key)) {
-            $value = method_exists($this, 'fromJson') ? $this->fromJson($value) : json_decode($value);
+            $value = $this->getJsonCastValue($value);
 
             return empty($value) ? null : $value;
         }
@@ -96,5 +92,18 @@ trait NullableFields
 
         // Assume no fields are nullable
         return [];
+    }
+
+
+    /**
+     * Return the value encoded in json in the appropriate PHP type.
+     *
+     * @param  string $value
+     *
+     * @return mixed
+     */
+    private function getJsonCastValue($value)
+    {
+        return method_exists($this, 'fromJson') ? $this->fromJson($value) : json_decode($value);
     }
 }

@@ -1,5 +1,5 @@
 # Nullable database fields for the Laravel PHP Framework
-## v1.0.2
+## v1.1.0
 
 ![Travis Build Status](https://travis-ci.org/michaeldyrynda/laravel-nullable-fields.svg?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/deringer/laravel-nullable-fields/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/deringer/laravel-nullable-fields/?branch=master)
@@ -91,6 +91,8 @@ $profile->array_casted = []; // Empty, saved as null
 $profile->array_not_casted = []; // Empty, saved as null
 $profile->save();
 ```
+
+As of 1.1.0, this package exposes the underlying functionality which determines and sets empty fields to `null` as a public method. This allows users to implement their own model `saving` event listeners, by calling the `setNullableFields` method along with any additional save-time behaviours.
 
 # More information
 
