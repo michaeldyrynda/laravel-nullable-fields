@@ -30,6 +30,12 @@ class NullableFieldsIntegrationTest extends PHPUnit_Framework_TestCase
             $table->text('array_casted')->nullable()->default(null);
             $table->text('array_not_casted')->nullable()->default(null);
         });
+
+        $manager->schema()->create('products', function ($table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->string('amount')->nullable()->default(null);
+        });
     }
 
 
@@ -40,8 +46,8 @@ class NullableFieldsIntegrationTest extends PHPUnit_Framework_TestCase
         $user->facebook_profile = ' ';
         $user->twitter_profile  = 'michaeldyrynda';
         $user->linkedin_profile = '';
-        $user->array_casted     = [ ];
-        $user->array_not_casted = [ ];
+        $user->array_casted     = [];
+        $user->array_not_casted = [];
         $user->save();
 
         $this->assertNull($user->facebook_profile);
@@ -60,8 +66,8 @@ class NullableFieldsIntegrationTest extends PHPUnit_Framework_TestCase
             'facebook_profile' => '',
             'twitter_profile'  => 'michaeldyrynda',
             'linkedin_profile' => ' ',
-            'array_casted'     => [ ],
-            'array_not_casted' => [ ],
+            'array_casted'     => [],
+            'array_not_casted' => [],
         ]);
 
         $this->assertNull($user->facebook_profile);
@@ -84,6 +90,22 @@ class NullableFieldsIntegrationTest extends PHPUnit_Framework_TestCase
         $this->assertNull($user->facebook_profile);
         $this->assertNull($user->twitter_profile);
         $this->assertNull($user->linkedin_profile);
+    }
+
+    /** @test */
+    public function it_handles_a_cast_value_with_a_mutator_set()
+    {
+        $product = Product::create(['name' => "mikemand's test product", 'amount' => 6.27]);
+
+        $this->assertNotNull($product->amount);
+    }
+
+    /** @test */
+    public function it_handles_an_empty_cast_value_with_a_mutator_set()
+    {
+        $product = Product::create(['name' => "mikemand's test product"]);
+
+        $this->assertNull($product->amount);
     }
 }
 
@@ -109,7 +131,7 @@ class UserProfile extends Model
         'array_not_casted',
     ];
 
-    protected $casts = [ 'array_casted' => 'array', ];
+    protected $casts = ['array_casted' => 'array'];
 }
 
 
@@ -144,5 +166,25 @@ class UserProfileSaving extends Model
 
             $model->setNullableFields();
         });
+    }
+}
+
+class Product extends Model
+{
+    use NullableFields;
+
+    protected $fillable = ['name', 'amount'];
+
+    public $timestamps = false;
+
+    protected $nullable = ['amount'];
+
+    protected $casts = ['amount' => 'array'];
+
+    public function setAmountAttribute($amount)
+    {
+        $amount *= 100;
+
+        $this->attributes['amount'] = ['amount' => $amount, 'currency' => 'USD'];
     }
 }
