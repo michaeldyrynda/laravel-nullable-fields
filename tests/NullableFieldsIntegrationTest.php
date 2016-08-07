@@ -33,6 +33,7 @@ class NullableFieldsIntegrationTest extends PHPUnit_Framework_TestCase
 
         $manager->schema()->create('products', function ($table) {
             $table->increments('id');
+            $table->string('name');
             $table->string('amount')->nullable()->default(null);
         });
     }
@@ -92,11 +93,19 @@ class NullableFieldsIntegrationTest extends PHPUnit_Framework_TestCase
     }
 
     /** @test */
-    public function it_handles_a_json_cast_value_with_a_mutator_set()
+    public function it_handles_a_cast_value_with_a_mutator_set()
     {
-        $product = Product::create(['amount' => 6.27]);
+        $product = Product::create(['name' => "mikemand's test product", 'amount' => 6.27]);
 
         $this->assertNotNull($product->amount);
+    }
+
+    /** @test */
+    public function it_handles_an_empty_cast_value_with_a_mutator_set()
+    {
+        $product = Product::create(['name' => "mikemand's test product"]);
+
+        $this->assertNull($product->amount);
     }
 }
 
@@ -164,7 +173,7 @@ class Product extends Model
 {
     use NullableFields;
 
-    protected $fillable = ['amount'];
+    protected $fillable = ['name', 'amount'];
 
     public $timestamps = false;
 
