@@ -14,6 +14,23 @@ namespace Iatstuti\Database\Support;
  */
 trait NullableFields
 {
+    /**
+     * {@inheritdoc}
+     */
+    abstract public function getAttribute($key);
+
+
+    /**
+     * {@inheritdoc}
+     */
+    abstract public function getAttributes();
+
+
+    /**
+     * {@inheritdoc}
+     */
+    abstract public function hasSetMutator($key);
+
 
     /**
      * Boot the trait, add a saving observer.
@@ -43,6 +60,7 @@ trait NullableFields
         }
     }
 
+
     /**
      * If value is empty, return null, otherwise return the original input.
      *
@@ -53,10 +71,8 @@ trait NullableFields
      */
     public function nullIfEmpty($value, $key = null)
     {
-        if (! is_null($key) && $this->isJsonCastable($key)) {
-            $value = $this->getJsonCastValue($value);
-
-            return empty($value) ? null : $value;
+        if (! is_null($key)) {
+            $value = $this->hasSetMutator($key) ? $this->setJsonCastValue($value) : $this->getAttribute($key);
         }
 
         if (is_array($value)) {
@@ -65,16 +81,6 @@ trait NullableFields
 
         return trim($value) === '' ? null : $value;
     }
-
-
-    /**
-     * Determine whether a value is JSON castable for inbound manipulation.
-     *
-     * @param  string  $key
-     *
-     * @return bool
-     */
-    abstract protected function isJsonCastable($key);
 
 
     /**
@@ -96,14 +102,14 @@ trait NullableFields
 
 
     /**
-     * Return the value encoded in json in the appropriate PHP type.
+     * Return value of the native PHP type as a json-encoded value
      *
-     * @param  string $value
+     * @param  mixed $value
      *
-     * @return mixed
+     * @return string
      */
-    private function getJsonCastValue($value)
+    private function setJsonCastValue($value)
     {
-        return method_exists($this, 'fromJson') ? $this->fromJson($value) : json_encode($value);
+        return method_exists($this, 'asJson') ? $this->asJson($value) : json_encode($value);
     }
 }

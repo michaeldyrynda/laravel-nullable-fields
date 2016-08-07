@@ -162,11 +162,15 @@ class UserProfileSaving extends Model
 
 class Product extends Model
 {
+    use NullableFields;
+
     protected $fillable = ['amount'];
 
     public $timestamps = false;
 
     protected $nullable = ['amount'];
+
+    protected $casts = ['amount' => 'array'];
 
     public function setAmountAttribute($amount)
     {
