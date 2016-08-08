@@ -15,19 +15,27 @@ namespace Iatstuti\Database\Support;
 trait NullableFields
 {
     /**
-     * {@inheritdoc}
+     * Get an attribute from the model.
+     *
+     * @param  string  $key
+     * @return mixed
      */
     abstract public function getAttribute($key);
 
 
     /**
-     * {@inheritdoc}
+     * Get all of the current attributes on the model.
+     *
+     * @return array
      */
     abstract public function getAttributes();
 
 
     /**
-     * {@inheritdoc}
+     * Determine if a set mutator exists for an attribute.
+     *
+     * @param  string  $key
+     * @return bool
      */
     abstract public function hasSetMutator($key);
 
