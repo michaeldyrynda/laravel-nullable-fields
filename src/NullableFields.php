@@ -15,19 +15,28 @@ namespace Iatstuti\Database\Support;
 trait NullableFields
 {
     /**
-     * {@inheritdoc}
-     */
-    abstract public function getAttribute($key);
-
-
-    /**
-     * {@inheritdoc}
+     * Get all of the current attributes on the model.
+     *
+     * @return array
      */
     abstract public function getAttributes();
 
 
     /**
-     * {@inheritdoc}
+     * Determine whether a value is JSON castable for inbound manipulation.
+     *
+     * @param  string  $key
+     *
+     * @return bool
+     */
+    abstract protected function isJsonCastable($key);
+
+
+    /**
+     * Determine if a set mutator exists for an attribute.
+     *
+     * @param  string  $key
+     * @return bool
      */
     abstract public function hasSetMutator($key);
 
@@ -71,8 +80,10 @@ trait NullableFields
      */
     public function nullIfEmpty($value, $key = null)
     {
-        if (! is_null($key)) {
-            $value = $this->hasSetMutator($key) ? $this->setJsonCastValue($value) : $this->getAttribute($key);
+        if (! is_null($key) && $this->isJsonCastable($key)) {
+            $value  = $this->hasSetMutator($key) ? $value : $this->getJsonCastValue($value);
+
+            return (empty($value) || trim($value) === '') ? null : $value;
         }
 
         if (is_array($value)) {
@@ -108,8 +119,8 @@ trait NullableFields
      *
      * @return string
      */
-    private function setJsonCastValue($value)
+    private function getJsonCastValue($value)
     {
-        return method_exists($this, 'asJson') ? $this->asJson($value) : json_encode($value);
+        return method_exists($this, 'fromJson') ? $this->fromJson($value) : json_decode($value);
     }
 }

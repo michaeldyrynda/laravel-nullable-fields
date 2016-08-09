@@ -107,6 +107,19 @@ class NullableFieldsIntegrationTest extends PHPUnit_Framework_TestCase
 
         $this->assertNull($product->amount);
     }
+
+    /** @test */
+    public function it_handles_setting_a_cast_value_to_an_empty_value_via_a_mutator()
+    {
+        $product = Product::create(['name' => "mikemand's test product", 'amount' => '6.27']);
+
+        $this->assertNotNull($product->amount);
+
+        $product->someCondition = true;
+        $product->update(['amount' => 'this will be an empty array']);
+
+        $this->assertNull($product->amount);
+    }
 }
 
 class UserProfile extends Model
@@ -181,10 +194,16 @@ class Product extends Model
 
     protected $casts = ['amount' => 'array'];
 
+    public $someCondition = false;
+
     public function setAmountAttribute($amount)
     {
-        $amount *= 100;
+        if ($this->someCondition) {
+            $this->attributes['amount'] = [];
+        } else {
+            $amount *= 100;
 
-        $this->attributes['amount'] = ['amount' => $amount, 'currency' => 'USD'];
+            $this->attributes['amount'] = json_encode(['amount' => $amount, 'currency' => 'USD']);
+        }
     }
 }
