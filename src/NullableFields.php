@@ -80,14 +80,12 @@ trait NullableFields
      */
     public function nullIfEmpty($value, $key = null)
     {
-        if (! is_null($key) && $this->isJsonCastable($key)) {
-            $value  = $this->hasSetMutator($key) ? $value : $this->getJsonCastValue($value);
-
-            return (empty($value) || trim($value) === '') ? null : $value;
+        if (! is_null($key)) {
+            $value = $this->fetchValueForKey($key, $value);
         }
 
         if (is_array($value)) {
-            return empty($value) ? null : $value;
+            return $this->nullIfEmptyArray($key, $value);
         }
 
         return trim($value) === '' ? null : $value;
@@ -119,8 +117,62 @@ trait NullableFields
      *
      * @return string
      */
+    private function setJsonCastValue($value)
+    {
+        return method_exists($this, 'asJson') ? $this->asJson($value) : json_encode($value);
+    }
+
+
+    /**
+     * Return value of the json-encoded value as a native PHP type
+     *
+     * @param  mixed $value
+     *
+     * @return string
+     */
     private function getJsonCastValue($value)
     {
         return method_exists($this, 'fromJson') ? $this->fromJson($value) : json_decode($value);
+    }
+
+
+    /**
+     * For the given key and value pair, determine the actual value,
+     * depending on whether or not a mutator or cast is in use.
+     *
+     * @param  string  $key
+     * @param  mixed  $value
+     *
+     * @return mixed
+     */
+    private function fetchValueForKey($key, $value)
+    {
+        if (! $this->hasSetMutator($key)) {
+            $value = $this->getAttribute($key);
+        }
+
+        if ($this->isJsonCastable($key) && ! is_null($value)) {
+            $value = is_string($value) ? $this->getJsonCastValue($value) : $value;
+        }
+
+        return $value;
+    }
+
+
+    /**
+     * Determine whether an array value is empty, taking into account casting.
+     *
+     * @param  string  $key
+     * @param  array  $value
+     *
+     * @return mixed
+     */
+    private function nullIfEmptyArray($key, $value)
+    {
+        if ($this->isJsonCastable($key) && ! empty($value)) {
+            return $this->setJsonCastValue($value);
+        }
+
+        return empty($value) ? null : $value;
     }
 }
