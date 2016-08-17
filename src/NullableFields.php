@@ -132,7 +132,7 @@ trait NullableFields
      */
     private function getJsonCastValue($value)
     {
-        return method_exists($this, 'fromJson') ? $this->fromJson($value) : json_decode($value);
+        return method_exists($this, 'fromJson') ? $this->fromJson($value) : json_decode($value, true);
     }
 
 
