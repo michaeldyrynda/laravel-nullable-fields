@@ -23,6 +23,15 @@ trait NullableFields
 
 
     /**
+     * Get an attribute from the model.
+     *
+     * @param  string  $key
+     * @return mixed
+     */
+    abstract public function getAttribute($key);
+
+
+    /**
      * Determine whether a value is JSON castable for inbound manipulation.
      *
      * @param  string  $key
