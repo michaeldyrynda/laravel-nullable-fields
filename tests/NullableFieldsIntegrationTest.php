@@ -26,6 +26,7 @@ class NullableFieldsIntegrationTest extends PHPUnit_Framework_TestCase
             $table->increments('id');
             $table->string('facebook_profile')->nullable()->default(null);
             $table->string('twitter_profile')->nullable()->default(null);
+            $table->string('twitter_profile_mutated')->nullable()->default(null);
             $table->string('linkedin_profile')->nullable()->default(null);
             $table->text('array_casted')->nullable()->default(null);
             $table->text('array_not_casted')->nullable()->default(null);
@@ -120,6 +121,30 @@ class NullableFieldsIntegrationTest extends PHPUnit_Framework_TestCase
 
         $this->assertNull($product->amount);
     }
+
+    /** @test */
+    public function it_doesnt_munge_an_existing_non_null_value_on_save()
+    {
+        $profile = UserProfile::create(['twitter_profile' => 'michaeldyrynda']);
+
+        $this->assertEquals('michaeldyrynda', $profile->twitter_profile);
+
+        $profile->save();
+
+        $this->assertEquals('michaeldyrynda', $profile->twitter_profile);
+    }
+
+    /** @test */
+    public function it_doesnt_munge_an_existing_non_null_value_with_a_mutator_set_on_save()
+    {
+        $profile = UserProfile::create(['twitter_profile_mutated' => 'michaeldyrynda']);
+
+        $this->assertEquals('@michaeldyrynda', $profile->twitter_profile_mutated);
+
+        $profile->save();
+
+        $this->assertEquals('@michaeldyrynda', $profile->twitter_profile_mutated);
+    }
 }
 
 class UserProfile extends Model
@@ -134,6 +159,7 @@ class UserProfile extends Model
         'linkedin_profile',
         'array_casted',
         'array_not_casted',
+        'twitter_profile_mutated',
     ];
 
     protected $nullable = [
@@ -142,9 +168,15 @@ class UserProfile extends Model
         'linkedin_profile',
         'array_casted',
         'array_not_casted',
+        'twitter_profile_mutated',
     ];
 
     protected $casts = ['array_casted' => 'array'];
+
+    public function setTwitterProfileMutatedAttribute($twitter_profile_mutated)
+    {
+        $this->attributes['twitter_profile_mutated'] = sprintf('@%s', $twitter_profile_mutated);
+    }
 }
 
 
