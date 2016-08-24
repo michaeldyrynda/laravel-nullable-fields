@@ -4,7 +4,6 @@ php:
   - '5.4'
   - '5.5.9'
   - '5.6'
-  - '5.6.4'
   - '7.0'
   - nightly
 
@@ -21,7 +20,7 @@ matrix:
       env: ILLUMINATE_VERSION=5.1.*
     - php: 5.6
       env: ILLUMINATE_VERSION=5.2.*
-    - php: 5.6.4
+    - php: 5.6
       env: ILLUMINATE_VERSION=5.3.*
     - php: 7.0
       env: ILLUMINATE_VERSION=5.1.*
