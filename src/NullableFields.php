@@ -17,9 +17,11 @@ trait NullableFields
     /**
      * Get all of the current attributes on the model.
      *
+     * @param array $keys
+     *
      * @return array
      */
-    abstract public function getAttributes();
+    abstract public function getAttributes($keys = []);
 
 
     /**
