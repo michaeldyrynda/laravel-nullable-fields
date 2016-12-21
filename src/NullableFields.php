@@ -51,6 +51,14 @@ trait NullableFields
 
 
     /**
+     * Get the attributes that should be converted to dates.
+     *
+     * @return array
+     */
+    abstract public function getDates();
+
+
+    /**
      * Boot the trait, add a saving observer.
      *
      * When saving the model, we iterate over its attributes and for any attribute
@@ -156,6 +164,10 @@ trait NullableFields
      */
     private function fetchValueForKey($key, $value)
     {
+        if (in_array($key, $this->getDates())) {
+            return trim($value) === '' ? null : $value;
+        }
+
         if (! $this->hasSetMutator($key)) {
             $value = $this->getAttribute($key);
         }

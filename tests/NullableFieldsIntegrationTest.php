@@ -37,6 +37,11 @@ class NullableFieldsIntegrationTest extends PHPUnit_Framework_TestCase
             $table->string('name');
             $table->string('amount')->nullable()->default(null);
         });
+
+        $manager->schema()->create('dates', function ($table) {
+            $table->increments('id');
+            $table->timestamp('last_tested_at')->nullable()->default(null);
+        });
     }
 
 
@@ -145,6 +150,22 @@ class NullableFieldsIntegrationTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('@michaeldyrynda', $profile->twitter_profile_mutated);
     }
+
+    /** @test */
+    public function it_correctly_handles_empty_date_fields()
+    {
+        $date = DateTest::create(['last_tested_at' => '']);
+
+        $this->assertNull($date->last_tested_at);        
+    }
+
+    /** @test */
+    public function it_correctly_handles_set_date_fields()
+    {
+        $date = DateTest::create(['last_tested_at' => Carbon\Carbon::parse('2016-12-22 09:12:00')]);
+
+        $this->assertEquals('2016-12-22 09:12:00', (string) $date->last_tested_at);
+    }
 }
 
 class UserProfile extends Model
@@ -238,4 +259,19 @@ class Product extends Model
             $this->attributes['amount'] = json_encode(['amount' => $amount, 'currency' => 'USD']);
         }
     }
+}
+
+class DateTest extends Model
+{
+    use NullableFields;
+
+    protected $table = 'dates';
+
+    protected $fillable = ['last_tested_at'];
+
+    protected $dates = ['last_tested_at'];
+
+    protected $nullable = ['last_tested_at'];
+
+    public $timestamps = false;
 }
