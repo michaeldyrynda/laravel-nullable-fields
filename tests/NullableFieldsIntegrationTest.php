@@ -30,6 +30,7 @@ class NullableFieldsIntegrationTest extends PHPUnit_Framework_TestCase
             $table->string('linkedin_profile')->nullable()->default(null);
             $table->text('array_casted')->nullable()->default(null);
             $table->text('array_not_casted')->nullable()->default(null);
+            $table->boolean('boolean')->nullable()->default(null);
         });
 
         $manager->schema()->create('products', function ($table) {
@@ -152,6 +153,18 @@ class NullableFieldsIntegrationTest extends PHPUnit_Framework_TestCase
     }
 
     /** @test */
+    public function it_doesnt_munge_a_boolean_false_value()
+    {
+        $user = UserProfile::create([
+            'facebook_profile' => '',
+            'boolean' => false,
+        ]);
+
+        $this->assertNull($user->facebook_profile);
+        $this->assertFalse($user->boolean);
+    }
+
+    /** @test */
     public function it_correctly_handles_empty_date_fields()
     {
         $date = DateTest::create(['last_tested_at' => '']);
@@ -181,6 +194,7 @@ class UserProfile extends Model
         'array_casted',
         'array_not_casted',
         'twitter_profile_mutated',
+        'boolean',
     ];
 
     protected $nullable = [
@@ -190,9 +204,10 @@ class UserProfile extends Model
         'array_casted',
         'array_not_casted',
         'twitter_profile_mutated',
+        'boolean',
     ];
 
-    protected $casts = ['array_casted' => 'array'];
+    protected $casts = ['array_casted' => 'array', 'boolean' => 'boolean'];
 
     public function setTwitterProfileMutatedAttribute($twitter_profile_mutated)
     {
