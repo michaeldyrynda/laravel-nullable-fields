@@ -105,7 +105,11 @@ trait NullableFields
             return $this->nullIfEmptyArray($key, $value);
         }
 
-        return $value !== false && trim($value) === '' ? null : $value;
+        if (is_bool($value)) {
+            return $value;
+        }
+
+        return trim($value) === '' ? null : $value;
     }
 
 
