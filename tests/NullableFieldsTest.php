@@ -45,7 +45,7 @@ class NullableFieldsTest extends PHPUnit_Framework_TestCase
     /** @test */
     public function it_does_not_modify_a_false_value()
     {
-        $this->assertSame(false, $this->nullable->nullIfEmpty(false));
+        $this->assertFalse($this->nullable->nullIfEmpty(false));
     }
 
 

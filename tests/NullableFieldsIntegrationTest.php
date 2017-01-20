@@ -161,7 +161,7 @@ class NullableFieldsIntegrationTest extends PHPUnit_Framework_TestCase
         ]);
 
         $this->assertNull($user->facebook_profile);
-        $this->assertSame(false, $user->boolean);
+        $this->assertFalse($user->boolean);
     }
 
     /** @test */
