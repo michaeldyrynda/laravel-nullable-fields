@@ -43,6 +43,13 @@ class NullableFieldsTest extends PHPUnit_Framework_TestCase
 
 
     /** @test */
+    public function it_does_not_modify_a_false_value()
+    {
+        $this->assertSame(false, $this->nullable->nullIfEmpty(false));
+    }
+
+
+    /** @test */
     public function it_correctly_handles_an_empty_array_as_null()
     {
         $this->assertNull($this->nullable->nullIfEmpty([ ]));
