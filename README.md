@@ -29,13 +29,13 @@ public function up()
 {
     Schema::create('profile_user', function (Blueprint $table) {
         $table->increments('id');
-        $table->integer('user_id')->nullable()->default(null);
+        $table->integer('user_id')->nullable();
         $table->foreign('user_id')->references('users')->on('id'); 
-        $table->string('twitter_profile')->nullable()->default(null);
-        $table->string('facebook_profile')->nullable()->default(null);
-        $table->string('linkedin_profile')->nullable()->default(null);
-        $table->text('array_casted')->nullable()->default(null);
-        $table->text('array_not_casted')->nullable()->default(null);
+        $table->string('twitter_profile')->nullable();
+        $table->string('facebook_profile')->nullable();
+        $table->string('linkedin_profile')->nullable();
+        $table->text('array_casted')->nullable();
+        $table->text('array_not_casted')->nullable();
     });
 }
 ```
