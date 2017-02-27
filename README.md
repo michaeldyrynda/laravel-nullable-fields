@@ -104,14 +104,14 @@ $profile->save();
 
 # More information
 
-[Working with nullable fields in Eloquent models](https://iatstuti.net/blog/working-with-nullable-fields-in-eloquent-models) - first iteration
+[Working with nullable fields in Eloquent models](https://dyrynda.com.au/blog/working-with-nullable-fields-in-eloquent-models) - first iteration
 
-[Working with nullable fields in Eloquent models - Part Deux](https://iatstuti.net/blog/working-with-nullable-field-in-eloquent-models-part-deux) - second iteration, covers the details of this package
+[Working with nullable fields in Eloquent models - Part Deux](https://dyrynda.com.au/blog/working-with-nullable-field-in-eloquent-models-part-deux) - second iteration, covers the details of this package
 
 # Support
 
 If you are having general issues with this package, feel free to contact me on [Twitter](https://twitter.com/michaeldyrynda).
 
-If you believe you have found an issue, please report it using the [GitHub issue tracker](https://github.com/deringer/laravel-nullable-fields/issues), or better yet, fork the repository and submit a pull request.
+If you believe you have found an issue, please report it using the [GitHub issue tracker](https://github.com/michaeldyrynda/laravel-nullable-fields/issues), or better yet, fork the repository and submit a pull request.
 
 If you're using this package, I'd love to hear your thoughts. Thanks!
