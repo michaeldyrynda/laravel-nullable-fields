@@ -1,5 +1,5 @@
 # Nullable database fields for the Laravel PHP Framework
-## v1.5.0
+## v1.6.0
 
 ![Travis Build Status](https://travis-ci.org/michaeldyrynda/laravel-nullable-fields.svg?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/michaeldyrynda/laravel-nullable-fields/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/michaeldyrynda/laravel-nullable-fields/?branch=master)
@@ -23,6 +23,8 @@ Version 1.3.2 adds better handling of `boolean` fields, particularly when set to
 Version 1.4.0 adds compatibility for Laravel 5.4.
 
 Version 1.5.0 adds compatibility for Laravel 5.5.
+
+Version 1.6.0 adds compatibility for Laravel 5.6.
 
 Note, the database field must be configured to allow null.
 
