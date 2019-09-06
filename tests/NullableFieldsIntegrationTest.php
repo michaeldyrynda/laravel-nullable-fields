@@ -1,15 +1,15 @@
 <?php
 
-use Iatstuti\Database\Support\NullableFields;
-use Illuminate\Container\Container;
-use Illuminate\Database\Capsule\Manager;
-use Illuminate\Database\Eloquent\Model;
+use PHPUnit\Framework\TestCase;
 use Illuminate\Events\Dispatcher;
+use Illuminate\Container\Container;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Capsule\Manager;
+use Iatstuti\Database\Support\NullableFields;
 
-class NullableFieldsIntegrationTest extends PHPUnit_Framework_TestCase
+class NullableFieldsIntegrationTest extends TestCase
 {
-
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         $manager = new Manager();
         $manager->addConnection([
@@ -169,7 +169,7 @@ class NullableFieldsIntegrationTest extends PHPUnit_Framework_TestCase
     {
         $date = DateTest::create(['last_tested_at' => '']);
 
-        $this->assertNull($date->last_tested_at);        
+        $this->assertNull($date->last_tested_at);
     }
 
     /** @test */
@@ -220,9 +220,9 @@ class UserProfileSaving extends Model
 {
     use NullableFields;
 
-    protected $table = 'user_profiles';
-
     public $timestamps = false;
+
+    protected $table = 'user_profiles';
 
     protected $fillable = [
         'facebook_profile',
@@ -254,15 +254,15 @@ class Product extends Model
 {
     use NullableFields;
 
-    protected $fillable = ['name', 'amount'];
-
     public $timestamps = false;
+
+    public $someCondition = false;
+
+    protected $fillable = ['name', 'amount'];
 
     protected $nullable = ['amount'];
 
     protected $casts = ['amount' => 'array'];
-
-    public $someCondition = false;
 
     public function setAmountAttribute($amount)
     {
@@ -280,6 +280,8 @@ class DateTest extends Model
 {
     use NullableFields;
 
+    public $timestamps = false;
+
     protected $table = 'dates';
 
     protected $fillable = ['last_tested_at'];
@@ -287,6 +289,4 @@ class DateTest extends Model
     protected $dates = ['last_tested_at'];
 
     protected $nullable = ['last_tested_at'];
-
-    public $timestamps = false;
 }
