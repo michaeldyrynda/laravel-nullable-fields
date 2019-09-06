@@ -1,6 +1,8 @@
 <?php
 
-class NullableFieldsTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class NullableFieldsTest extends TestCase
 {
 
     /**
@@ -8,7 +10,7 @@ class NullableFieldsTest extends PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->nullable = $this->getMockForTrait('Iatstuti\Database\Support\NullableFields');
     }
@@ -52,13 +54,13 @@ class NullableFieldsTest extends PHPUnit_Framework_TestCase
     /** @test */
     public function it_correctly_handles_an_empty_array_as_null()
     {
-        $this->assertNull($this->nullable->nullIfEmpty([ ]));
+        $this->assertNull($this->nullable->nullIfEmpty([]));
     }
 
 
     /** @test */
     public function it_correctly_handles_a_non_empty_array()
     {
-        $this->assertSame([ 'twitter' => 'michaeldyrynda', ], $this->nullable->nullIfEmpty([ 'twitter' => 'michaeldyrynda', ]));
+        $this->assertSame(['twitter' => 'michaeldyrynda'], $this->nullable->nullIfEmpty(['twitter' => 'michaeldyrynda']));
     }
 }
