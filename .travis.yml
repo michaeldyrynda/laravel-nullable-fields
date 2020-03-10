@@ -8,11 +8,11 @@ matrix:
   fast_finish: true
   include:
     - php: 7.2
-      env: ILLUMINATE_VERSION=6.0.*
+      env: ILLUMINATE_VERSION=^7.0
     - php: 7.3
-      env: ILLUMINATE_VERSION=6.0.*
+      env: ILLUMINATE_VERSION=^7.0
     - php: 7.4snapshot
-      env: ILLUMINATE_VERSION=6.0.*
+      env: ILLUMINATE_VERSION=^7.0
 
 before_install:
   - composer require "illuminate/database:${ILLUMINATE_VERSION}" --no-update -v
