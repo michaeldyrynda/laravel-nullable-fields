@@ -7,7 +7,7 @@
 [![Latest Stable Version](https://poser.pugx.org/iatstuti/laravel-nullable-fields/v/stable)](https://packagist.org/packages/iatstuti/laravel-nullable-fields)
 [![Total Downloads](https://poser.pugx.org/iatstuti/laravel-nullable-fields/downloads)](https://packagist.org/packages/iatstuti/laravel-nullable-fields)
 [![License](https://poser.pugx.org/iatstuti/laravel-nullable-fields/license)](https://packagist.org/packages/iatstuti/laravel-nullable-fields)
-[![Buy us a tree](https://img.shields.io/badge/Treeware-%F0%9F%8C%B3-lightgreen?style=for-the-badge)](https://offset.earth/treeware?gift-trees)
+[![Buy us a tree](https://img.shields.io/badge/Treeware-%F0%9F%8C%B3-lightgreen)](https://plant.treeware.earth/michaeldyrynda/laravel-nullable-fields)
 
 Often times, database fields that are not assigned values are defaulted to `null`. This is particularly important when creating records with foreign key constraints, where the relationship is not yet established.
 
@@ -99,6 +99,6 @@ You're free to use this package, but if it makes it to your production environme
 
 It’s now common knowledge that one of the best tools to tackle the climate crisis and keep our temperatures from rising above 1.5C is to plant trees. If you support this package and contribute to the Treeware forest you’ll be creating employment for local families and restoring wildlife habitats.
 
-You can buy trees [here](https://offset.earth/treeware)
+You can buy trees [here](https://plant.treeware.earth/michaeldyrynda/laravel-nullable-fields)
 
 Read more about Treeware at [treeware.earth](https://treeware.earth)
