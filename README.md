@@ -35,7 +35,6 @@ This trait is installed via [Composer](http://getcomposer.org/). To install, sim
 ```
 $ composer require dyrynda/laravel-nullable-fields
 ```
-```
 
 In order to use this trait, import it in your Eloquent model, then set the protected `$nullable` property as an array of fields you would like to be saved as `null` when empty.
 
