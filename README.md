@@ -1,9 +1,9 @@
 # Nullable database fields for the Laravel PHP Framework
 
 [![Build Status](https://github.com/michaeldyrynda/laravel-nullable-fields/workflows/run-tests/badge.svg)](https://github.com/michaeldyrynda/laravel-nullable-fields/actions?query=workflow%3Arun-tests)
-[![Latest Stable Version](https://poser.pugx.org/iatstuti/laravel-nullable-fields/v/stable)](https://packagist.org/packages/iatstuti/laravel-nullable-fields)
-[![Total Downloads](https://poser.pugx.org/iatstuti/laravel-nullable-fields/downloads)](https://packagist.org/packages/iatstuti/laravel-nullable-fields)
-[![License](https://poser.pugx.org/iatstuti/laravel-nullable-fields/license)](https://packagist.org/packages/iatstuti/laravel-nullable-fields)
+[![Latest Stable Version](https://poser.pugx.org/dyrynda/laravel-nullable-fields/v/stable)](https://packagist.org/packages/dyrynda/laravel-nullable-fields)
+[![Total Downloads](https://poser.pugx.org/dyrynda/laravel-nullable-fields/downloads)](https://packagist.org/packages/dyrynda/laravel-nullable-fields)
+[![License](https://poser.pugx.org/dyrynda/laravel-nullable-fields/license)](https://packagist.org/packages/dyrynda/laravel-nullable-fields)
 [![Buy us a tree](https://img.shields.io/badge/Treeware-%F0%9F%8C%B3-lightgreen)](https://plant.treeware.earth/michaeldyrynda/laravel-nullable-fields)
 
 Often times, database fields that are not assigned values are defaulted to `null`. This is particularly important when creating records with foreign key constraints, where the relationship is not yet established.
@@ -33,7 +33,7 @@ Laravel does not currently support automatically setting nullable database field
 This trait is installed via [Composer](http://getcomposer.org/). To install, simply add it to your `composer.json` file:
 
 ```
-$ composer require iatstuti/laravel-nullable-fields
+$ composer require dyrynda/laravel-nullable-fields
 ```
 ```
 
@@ -43,7 +43,7 @@ In order to use this trait, import it in your Eloquent model, then set the prote
 <?php
 
 use Illuminate\Database\Eloquent\Model;
-use Iatstuti\Database\Support\NullableFields;
+use Dyrynda\Database\Support\NullableFields;
 
 class UserProfile extends Model
 {

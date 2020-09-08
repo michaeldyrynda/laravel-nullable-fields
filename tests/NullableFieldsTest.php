@@ -12,7 +12,7 @@ class NullableFieldsTest extends TestCase
      */
     public function setUp(): void
     {
-        $this->nullable = $this->getMockForTrait('Iatstuti\Database\Support\NullableFields');
+        $this->nullable = $this->getMockForTrait('Dyrynda\Database\Support\NullableFields');
     }
 
 

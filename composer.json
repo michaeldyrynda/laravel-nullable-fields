@@ -24,7 +24,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Iatstuti\\Database\\Support\\": "src/"
+      "Dyrynda\\Database\\Support\\": "src/"
     }
   },
   "require-dev": {

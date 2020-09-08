@@ -1,6 +1,6 @@
 <?php
 
-namespace Iatstuti\Database\Support;
+namespace Dyrynda\Database\Support;
 
 /**
  * Nullable (database) fields trait.
@@ -8,9 +8,6 @@ namespace Iatstuti\Database\Support;
  * Include this trait in any Eloquent models you wish to automatically set
  * empty field values to null on. When saving, iterate over the model's
  * attributes and if their value is empty, make it null before save.
- *
- * @copyright  2015 IATSTUTI
- * @author     Michael Dyrynda <michael@dyrynda.com.au>
  */
 trait NullableFields
 {
@@ -32,16 +29,6 @@ trait NullableFields
 
 
     /**
-     * Determine whether a value is JSON castable for inbound manipulation.
-     *
-     * @param  string  $key
-     *
-     * @return bool
-     */
-    abstract protected function isJsonCastable($key);
-
-
-    /**
      * Determine if a set mutator exists for an attribute.
      *
      * @param  string  $key
@@ -56,6 +43,42 @@ trait NullableFields
      * @return array
      */
     abstract public function getDates();
+
+
+    /**
+     * If value is empty, return null, otherwise return the original input.
+     *
+     * @param  string $value
+     * @param  null $key
+     *
+     * @return null|string
+     */
+    public function nullIfEmpty($value, $key = null)
+    {
+        if (! is_null($key)) {
+            $value = $this->fetchValueForKey($key, $value);
+        }
+
+        if (is_array($value)) {
+            return $this->nullIfEmptyArray($key, $value);
+        }
+
+        if (is_bool($value)) {
+            return $value;
+        }
+
+        return trim($value) === '' ? null : $value;
+    }
+
+
+    /**
+     * Determine whether a value is JSON castable for inbound manipulation.
+     *
+     * @param  string  $key
+     *
+     * @return bool
+     */
+    abstract protected function isJsonCastable($key);
 
 
     /**
@@ -84,32 +107,6 @@ trait NullableFields
         foreach ($this->nullableFromArray($this->getAttributes()) as $key => $value) {
             $this->attributes[$key] = $this->nullIfEmpty($value, $key);
         }
-    }
-
-
-    /**
-     * If value is empty, return null, otherwise return the original input.
-     *
-     * @param  string $value
-     * @param  null $key
-     *
-     * @return null|string
-     */
-    public function nullIfEmpty($value, $key = null)
-    {
-        if (! is_null($key)) {
-            $value = $this->fetchValueForKey($key, $value);
-        }
-
-        if (is_array($value)) {
-            return $this->nullIfEmptyArray($key, $value);
-        }
-
-        if (is_bool($value)) {
-            return $value;
-        }
-
-        return trim($value) === '' ? null : $value;
     }
 
 

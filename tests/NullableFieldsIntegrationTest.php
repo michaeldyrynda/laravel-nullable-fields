@@ -5,7 +5,7 @@ use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Capsule\Manager;
-use Iatstuti\Database\Support\NullableFields;
+use Dyrynda\Database\Support\NullableFields;
 
 class NullableFieldsIntegrationTest extends TestCase
 {
