@@ -1,5 +1,5 @@
 {
-  "name": "iatstuti/laravel-nullable-fields",
+  "name": "dyrynda/laravel-nullable-fields",
   "description": "This trait allows you to easily flag attributes that should be set as null when being persisted to the database using the Laravel PHP Framework.",
   "type": "utility",
   "require": {
