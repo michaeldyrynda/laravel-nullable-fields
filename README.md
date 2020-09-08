@@ -1,8 +1,6 @@
 # Nullable database fields for the Laravel PHP Framework
 
 [![Build Status](https://github.com/michaeldyrynda/laravel-nullable-fields/workflows/run-tests/badge.svg)](https://github.com/michaeldyrynda/laravel-nullable-fields/actions?query=workflow%3Arun-tests)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/michaeldyrynda/laravel-nullable-fields/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/michaeldyrynda/laravel-nullable-fields/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/michaeldyrynda/laravel-nullable-fields/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/michaeldyrynda/laravel-nullable-fields/?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/iatstuti/laravel-nullable-fields/v/stable)](https://packagist.org/packages/iatstuti/laravel-nullable-fields)
 [![Total Downloads](https://poser.pugx.org/iatstuti/laravel-nullable-fields/downloads)](https://packagist.org/packages/iatstuti/laravel-nullable-fields)
 [![License](https://poser.pugx.org/iatstuti/laravel-nullable-fields/license)](https://packagist.org/packages/iatstuti/laravel-nullable-fields)
