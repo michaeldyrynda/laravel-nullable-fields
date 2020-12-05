@@ -3,9 +3,9 @@
   "description": "This trait allows you to easily flag attributes that should be set as null when being persisted to the database using the Laravel PHP Framework.",
   "type": "utility",
   "require": {
-    "php": "^7.3",
-    "illuminate/database": "^8.0",
-    "illuminate/events": "^8.0"
+    "php": "^7.3|^8.0",
+    "illuminate/database": "^8.12",
+    "illuminate/events": "^8.12"
   },
   "license": "MIT",
   "authors": [
