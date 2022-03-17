@@ -67,7 +67,7 @@ trait NullableFields
             return $value;
         }
 
-        return trim((string) $value) === '' ? null : $value;
+        return blank($value) ? null : $value;
     }
 
 
@@ -166,14 +166,14 @@ trait NullableFields
     private function fetchValueForKey($key, $value)
     {
         if (in_array($key, $this->getDates())) {
-            return trim((string) $value) === '' ? null : $value;
+            return blank($value) ? null : $value;
         }
 
         if (! $this->hasSetMutator($key)) {
             $value = $this->getAttribute($key);
         }
 
-        if ($this->isJsonCastable($key) && ! is_null($value)) {
+        if ($this->isJsonCastable($key) && ! blank($value)) {
             $value = is_string($value) ? $this->getJsonCastValue($value) : $value;
         }
 
@@ -191,10 +191,10 @@ trait NullableFields
      */
     private function nullIfEmptyArray($key, $value)
     {
-        if ($this->isJsonCastable($key) && ! empty($value)) {
+        if ($this->isJsonCastable($key) && ! blank($value)) {
             return $this->setJsonCastValue($value);
         }
 
-        return empty($value) ? null : $value;
+        return blank($value) ? null : $value;
     }
 }
