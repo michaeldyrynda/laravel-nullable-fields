@@ -67,7 +67,7 @@ trait NullableFields
             return $value;
         }
 
-        return trim($value) === '' ? null : $value;
+        return trim((string) $value) === '' ? null : $value;
     }
 
 
