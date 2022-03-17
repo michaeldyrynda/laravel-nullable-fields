@@ -166,7 +166,7 @@ trait NullableFields
     private function fetchValueForKey($key, $value)
     {
         if (in_array($key, $this->getDates())) {
-            return trim($value) === '' ? null : $value;
+            return trim((string) $value) === '' ? null : $value;
         }
 
         if (! $this->hasSetMutator($key)) {
