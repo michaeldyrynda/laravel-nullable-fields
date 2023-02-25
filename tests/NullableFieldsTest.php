@@ -4,6 +4,10 @@ use PHPUnit\Framework\TestCase;
 
 class NullableFieldsTest extends TestCase
 {
+    /**
+     * @var \PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $nullable;
 
     /**
      * Setup the test, getting an object for the NullableFields trait.
