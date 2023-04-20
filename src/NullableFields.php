@@ -121,6 +121,8 @@ trait NullableFields
     {
         if (is_array($this->nullable) && count($this->nullable) > 0) {
             return array_intersect_key($attributes, array_flip($this->nullable));
+        } else if ($this->nullable === '*') {
+            return $attributes;
         }
 
         // Assume no fields are nullable

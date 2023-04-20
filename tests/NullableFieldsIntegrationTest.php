@@ -67,9 +67,48 @@ class NullableFieldsIntegrationTest extends TestCase
 
 
     /** @test */
+    public function it_sets_all_empty_fields_to_null_when_saving()
+    {
+        $user                   = new UserProfileAll();
+        $user->facebook_profile = ' ';
+        $user->twitter_profile  = 'michaeldyrynda';
+        $user->linkedin_profile = '';
+        $user->array_casted     = [];
+        $user->array_not_casted = [];
+        $user->save();
+
+        $this->assertNull($user->facebook_profile);
+        $this->assertSame('michaeldyrynda', $user->twitter_profile);
+        $this->assertNull($user->linkedin_profile);
+        $this->assertNull($user->array_casted);
+        $this->assertNull($user->array_not_casted);
+        $this->assertNull(null);
+    }
+
+
+    /** @test */
     public function it_sets_nullable_fields_to_null_when_mass_assignment_is_used()
     {
         $user = UserProfile::create([
+            'facebook_profile' => '',
+            'twitter_profile'  => 'michaeldyrynda',
+            'linkedin_profile' => ' ',
+            'array_casted'     => [],
+            'array_not_casted' => [],
+        ]);
+
+        $this->assertNull($user->facebook_profile);
+        $this->assertSame('michaeldyrynda', $user->twitter_profile);
+        $this->assertNull($user->linkedin_profile);
+        $this->assertNull($user->array_casted);
+        $this->assertNull($user->array_not_casted);
+    }
+
+
+    /** @test */
+    public function it_sets_all_empty_fields_to_null_when_mass_assignment_is_used()
+    {
+        $user = UserProfileAll::create([
             'facebook_profile' => '',
             'twitter_profile'  => 'michaeldyrynda',
             'linkedin_profile' => ' ',
@@ -206,6 +245,34 @@ class UserProfile extends Model
         'twitter_profile_mutated',
         'boolean',
     ];
+
+    protected $casts = ['array_casted' => 'array', 'boolean' => 'boolean'];
+
+    public function setTwitterProfileMutatedAttribute($twitter_profile_mutated)
+    {
+        $this->attributes['twitter_profile_mutated'] = sprintf('@%s', $twitter_profile_mutated);
+    }
+}
+
+class UserProfileAll extends Model
+{
+    use NullableFields;
+
+    public $table = 'user_profiles';
+
+    public $timestamps = false;
+
+    protected $fillable = [
+        'facebook_profile',
+        'twitter_profile',
+        'linkedin_profile',
+        'array_casted',
+        'array_not_casted',
+        'twitter_profile_mutated',
+        'boolean',
+    ];
+
+    protected $nullable = '*';
 
     protected $casts = ['array_casted' => 'array', 'boolean' => 'boolean'];
 
