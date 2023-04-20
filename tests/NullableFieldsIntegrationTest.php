@@ -254,32 +254,11 @@ class UserProfile extends Model
     }
 }
 
-class UserProfileAll extends Model
+class UserProfileAll extends UserProfile
 {
-    use NullableFields;
-
     public $table = 'user_profiles';
 
-    public $timestamps = false;
-
-    protected $fillable = [
-        'facebook_profile',
-        'twitter_profile',
-        'linkedin_profile',
-        'array_casted',
-        'array_not_casted',
-        'twitter_profile_mutated',
-        'boolean',
-    ];
-
     protected $nullable = '*';
-
-    protected $casts = ['array_casted' => 'array', 'boolean' => 'boolean'];
-
-    public function setTwitterProfileMutatedAttribute($twitter_profile_mutated)
-    {
-        $this->attributes['twitter_profile_mutated'] = sprintf('@%s', $twitter_profile_mutated);
-    }
 }
 
 
