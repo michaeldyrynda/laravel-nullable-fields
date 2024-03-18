@@ -21,6 +21,9 @@
   "config": {
     "extra": {
       "sort-packages": true
+    },
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
     }
   },
   "autoload": {
@@ -28,7 +31,12 @@
       "Dyrynda\\Database\\Support\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
   "require-dev": {
-    "phpunit/phpunit": "^10.0.7"
+    "pestphp/pest": "^2.34"
   }
 }

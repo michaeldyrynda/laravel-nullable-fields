@@ -1,292 +1,152 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-use Illuminate\Events\Dispatcher;
+use Carbon\Carbon;
 use Illuminate\Container\Container;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Capsule\Manager;
-use Dyrynda\Database\Support\NullableFields;
-
-class NullableFieldsIntegrationTest extends TestCase
-{
-    public static function setUpBeforeClass(): void
-    {
-        $manager = new Manager();
-        $manager->addConnection([
-            'driver'   => 'sqlite',
-            'database' => ':memory:',
-        ]);
-
-        $manager->setEventDispatcher(new Dispatcher(new Container()));
-
-        $manager->setAsGlobal();
-        $manager->bootEloquent();
-
-        $manager->schema()->create('user_profiles', function ($table) {
-            $table->increments('id');
-            $table->string('facebook_profile')->nullable()->default(null);
-            $table->string('twitter_profile')->nullable()->default(null);
-            $table->string('twitter_profile_mutated')->nullable()->default(null);
-            $table->string('linkedin_profile')->nullable()->default(null);
-            $table->text('array_casted')->nullable()->default(null);
-            $table->text('array_not_casted')->nullable()->default(null);
-            $table->boolean('boolean')->nullable()->default(null);
-        });
-
-        $manager->schema()->create('products', function ($table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->string('amount')->nullable()->default(null);
-        });
-
-        $manager->schema()->create('dates', function ($table) {
-            $table->increments('id');
-            $table->timestamp('last_tested_at')->nullable()->default(null);
-        });
-    }
-
-
-    /** @test */
-    public function it_sets_nullable_fields_to_null_when_saving()
-    {
-        $user                   = new UserProfile;
-        $user->facebook_profile = ' ';
-        $user->twitter_profile  = 'michaeldyrynda';
-        $user->linkedin_profile = '';
-        $user->array_casted     = [];
-        $user->array_not_casted = [];
-        $user->save();
-
-        $this->assertNull($user->facebook_profile);
-        $this->assertSame('michaeldyrynda', $user->twitter_profile);
-        $this->assertNull($user->linkedin_profile);
-        $this->assertNull($user->array_casted);
-        $this->assertNull($user->array_not_casted);
-        $this->assertNull(null);
-    }
-
-
-    /** @test */
-    public function it_sets_nullable_fields_to_null_when_mass_assignment_is_used()
-    {
-        $user = UserProfile::create([
-            'facebook_profile' => '',
-            'twitter_profile'  => 'michaeldyrynda',
-            'linkedin_profile' => ' ',
-            'array_casted'     => [],
-            'array_not_casted' => [],
-        ]);
-
-        $this->assertNull($user->facebook_profile);
-        $this->assertSame('michaeldyrynda', $user->twitter_profile);
-        $this->assertNull($user->linkedin_profile);
-        $this->assertNull($user->array_casted);
-        $this->assertNull($user->array_not_casted);
-    }
-
-
-    /** @test */
-    public function it_handles_calling_the_nullabe_fields_setter_manually()
-    {
-        $user = UserProfile::create([
-            'facebook_profile' => '',
-            'twitter_profile'  => '',
-            'linkedin_profile' => '',
-        ]);
-
-        $this->assertNull($user->facebook_profile);
-        $this->assertNull($user->twitter_profile);
-        $this->assertNull($user->linkedin_profile);
-    }
-
-    /** @test */
-    public function it_handles_a_cast_value_with_a_mutator_set()
-    {
-        $product = Product::create(['name' => "mikemand's test product", 'amount' => 6.27]);
-
-        $this->assertNotNull($product->amount);
-    }
-
-    /** @test */
-    public function it_handles_an_empty_cast_value_with_a_mutator_set()
-    {
-        $product = Product::create(['name' => "mikemand's test product"]);
-
-        $this->assertNull($product->amount);
-    }
-
-    /** @test */
-    public function it_handles_setting_a_cast_value_to_an_empty_value_via_a_mutator()
-    {
-        $product = Product::create(['name' => "mikemand's test product", 'amount' => '6.27']);
-
-        $this->assertNotNull($product->amount);
+use Illuminate\Events\Dispatcher;
+use Tests\Fakes\DateTest;
+use Tests\Fakes\Product;
+use Tests\Fakes\UserProfile;
+
+beforeAll(function () {
+    $manager = new Manager();
+    $manager->addConnection([
+        'driver' => 'sqlite',
+        'database' => ':memory:',
+    ]);
+
+    $manager->setEventDispatcher(new Dispatcher(new Container()));
+
+    $manager->setAsGlobal();
+    $manager->bootEloquent();
+
+    $manager->schema()->create('user_profiles', function ($table) {
+        $table->increments('id');
+        $table->string('facebook_profile')->nullable()->default(null);
+        $table->string('twitter_profile')->nullable()->default(null);
+        $table->string('twitter_profile_mutated')->nullable()->default(null);
+        $table->string('linkedin_profile')->nullable()->default(null);
+        $table->text('array_casted')->nullable()->default(null);
+        $table->text('array_not_casted')->nullable()->default(null);
+        $table->boolean('boolean')->nullable()->default(null);
+    });
+
+    $manager->schema()->create('products', function ($table) {
+        $table->increments('id');
+        $table->string('name');
+        $table->string('amount')->nullable()->default(null);
+    });
+
+    $manager->schema()->create('dates', function ($table) {
+        $table->increments('id');
+        $table->timestamp('last_tested_at')->nullable()->default(null);
+    });
+});
+it('sets nullable fields to null when saving', function () {
+    $user = new UserProfile();
+    $user->facebook_profile = ' ';
+    $user->twitter_profile = 'michaeldyrynda';
+    $user->linkedin_profile = '';
+    $user->array_casted = [];
+    $user->array_not_casted = [];
+    $user->save();
+
+    expect($user->facebook_profile)->toBeNull();
+    expect($user->twitter_profile)->toBe('michaeldyrynda');
+    expect($user->linkedin_profile)->toBeNull();
+    expect($user->array_casted)->toBeNull();
+    expect($user->array_not_casted)->toBeNull();
+    expect(null)->toBeNull();
+});
+it('sets nullable fields to null when mass assignment is used', function () {
+    $user = UserProfile::create([
+        'facebook_profile' => '',
+        'twitter_profile' => 'michaeldyrynda',
+        'linkedin_profile' => ' ',
+        'array_casted' => [],
+        'array_not_casted' => [],
+    ]);
+
+    expect($user->facebook_profile)->toBeNull();
+    expect($user->twitter_profile)->toBe('michaeldyrynda');
+    expect($user->linkedin_profile)->toBeNull();
+    expect($user->array_casted)->toBeNull();
+    expect($user->array_not_casted)->toBeNull();
+});
+
+it('handles calling the nullabe fields setter manually', function () {
+    $user = UserProfile::create([
+        'facebook_profile' => '',
+        'twitter_profile' => '',
+        'linkedin_profile' => '',
+    ]);
+
+    expect($user->facebook_profile)->toBeNull();
+    expect($user->twitter_profile)->toBeNull();
+    expect($user->linkedin_profile)->toBeNull();
+});
+
+it('handles a cast value with a mutator set', function () {
+    $product = Product::create(['name' => "mikemand's test product", 'amount' => 6.27]);
+
+    expect($product->amount)->not->toBeNull();
+});
+
+it('handles an empty cast value with a mutator set', function () {
+    $product = Product::create(['name' => "mikemand's test product"]);
+
+    expect($product->amount)->toBeNull();
+});
+
+it('handles setting a cast value to an empty value via a mutator', function () {
+    $product = Product::create(['name' => "mikemand's test product", 'amount' => '6.27']);
+
+    expect($product->amount)->not->toBeNull();
+
+    $product->someCondition = true;
+    $product->update(['amount' => 'this will be an empty array']);
 
-        $product->someCondition = true;
-        $product->update(['amount' => 'this will be an empty array']);
+    expect($product->amount)->toBeNull();
+});
 
-        $this->assertNull($product->amount);
-    }
+it('doesnt munge an existing non null value on save', function () {
+    $profile = UserProfile::create(['twitter_profile' => 'michaeldyrynda']);
 
-    /** @test */
-    public function it_doesnt_munge_an_existing_non_null_value_on_save()
-    {
-        $profile = UserProfile::create(['twitter_profile' => 'michaeldyrynda']);
+    expect($profile->twitter_profile)->toEqual('michaeldyrynda');
 
-        $this->assertEquals('michaeldyrynda', $profile->twitter_profile);
-
-        $profile->save();
-
-        $this->assertEquals('michaeldyrynda', $profile->twitter_profile);
-    }
-
-    /** @test */
-    public function it_doesnt_munge_an_existing_non_null_value_with_a_mutator_set_on_save()
-    {
-        $profile = UserProfile::create(['twitter_profile_mutated' => 'michaeldyrynda']);
-
-        $this->assertEquals('@michaeldyrynda', $profile->twitter_profile_mutated);
-
-        $profile->save();
-
-        $this->assertEquals('@michaeldyrynda', $profile->twitter_profile_mutated);
-    }
-
-    /** @test */
-    public function it_doesnt_munge_a_boolean_false_value()
-    {
-        $user = UserProfile::create([
-            'facebook_profile' => '',
-            'boolean' => false,
-        ]);
-
-        $this->assertNull($user->facebook_profile);
-        $this->assertFalse($user->boolean);
-    }
+    $profile->save();
 
-    /** @test */
-    public function it_correctly_handles_empty_date_fields()
-    {
-        $date = DateTest::create(['last_tested_at' => '']);
+    expect($profile->twitter_profile)->toEqual('michaeldyrynda');
+});
 
-        $this->assertNull($date->last_tested_at);
-    }
+it('doesnt munge an existing non null value with a mutator set on save', function () {
+    $profile = UserProfile::create(['twitter_profile_mutated' => 'michaeldyrynda']);
 
-    /** @test */
-    public function it_correctly_handles_set_date_fields()
-    {
-        $date = DateTest::create(['last_tested_at' => Carbon\Carbon::parse('2016-12-22 09:12:00')]);
+    expect($profile->twitter_profile_mutated)->toEqual('@michaeldyrynda');
 
-        $this->assertEquals('2016-12-22 09:12:00', (string) $date->last_tested_at);
-    }
-}
+    $profile->save();
 
-class UserProfile extends Model
-{
-    use NullableFields;
+    expect($profile->twitter_profile_mutated)->toEqual('@michaeldyrynda');
+});
 
-    public $timestamps = false;
+it('doesnt munge a boolean false value', function () {
+    $user = UserProfile::create([
+        'facebook_profile' => '',
+        'boolean' => false,
+    ]);
 
-    protected $fillable = [
-        'facebook_profile',
-        'twitter_profile',
-        'linkedin_profile',
-        'array_casted',
-        'array_not_casted',
-        'twitter_profile_mutated',
-        'boolean',
-    ];
+    expect($user->facebook_profile)->toBeNull();
+    expect($user->boolean)->toBeFalse();
+});
 
-    protected $nullable = [
-        'facebook_profile',
-        'twitter_profile',
-        'linkedin_profile',
-        'array_casted',
-        'array_not_casted',
-        'twitter_profile_mutated',
-        'boolean',
-    ];
+it('correctly handles empty date fields', function () {
+    $date = DateTest::create(['last_tested_at' => '']);
 
-    protected $casts = ['array_casted' => 'array', 'boolean' => 'boolean'];
+    expect($date->last_tested_at)->toBeNull();
+});
 
-    public function setTwitterProfileMutatedAttribute($twitter_profile_mutated)
-    {
-        $this->attributes['twitter_profile_mutated'] = sprintf('@%s', $twitter_profile_mutated);
-    }
-}
+it('correctly handles set date fields', function () {
+    $date = DateTest::create(['last_tested_at' => Carbon::parse('2016-12-22 09:12:00')]);
 
-
-class UserProfileSaving extends Model
-{
-    use NullableFields;
-
-    public $timestamps = false;
-
-    protected $table = 'user_profiles';
-
-    protected $fillable = [
-        'facebook_profile',
-        'twitter_profile',
-        'linkedin_profile',
-        'array_casted',
-        'array_not_casted',
-    ];
-
-    protected $nullable = [
-        'facebook_profile',
-        'twitter_profile',
-        'linkedin_profile',
-        'array_casted',
-        'array_not_casted',
-    ];
-
-    public static function boot()
-    {
-        static::saving(function ($model) {
-            // some other behaviour
-
-            $model->setNullableFields();
-        });
-    }
-}
-
-class Product extends Model
-{
-    use NullableFields;
-
-    public $timestamps = false;
-
-    public $someCondition = false;
-
-    protected $fillable = ['name', 'amount'];
-
-    protected $nullable = ['amount'];
-
-    protected $casts = ['amount' => 'array'];
-
-    public function setAmountAttribute($amount)
-    {
-        if ($this->someCondition) {
-            $this->attributes['amount'] = [];
-        } else {
-            $amount *= 100;
-
-            $this->attributes['amount'] = json_encode(['amount' => $amount, 'currency' => 'USD']);
-        }
-    }
-}
-
-class DateTest extends Model
-{
-    use NullableFields;
-
-    public $timestamps = false;
-
-    protected $table = 'dates';
-
-    protected $fillable = ['last_tested_at'];
-
-    protected $dates = ['last_tested_at'];
-
-    protected $nullable = ['last_tested_at'];
-}
+    expect((string) $date->last_tested_at)->toEqual('2016-12-22 09:12:00');
+});
