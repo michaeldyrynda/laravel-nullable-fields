@@ -46,18 +46,17 @@ use Dyrynda\Database\Support\NullableFields;
 
 class UserProfile extends Model
 {
-	use NullableFields;
-	
-	protected $nullable = [
-		'facebook_profile',
-		'twitter_profile',
-		'linkedin_profile',
-		'array_casted',
-		'array_not_casted',
-	];
-	
-	protected $casts = [ 'array_casted' => 'array', ];
-	
+    use NullableFields;
+    
+    protected $nullable = [
+        'facebook_profile',
+        'twitter_profile',
+        'linkedin_profile',
+        'array_casted',
+        'array_not_casted',
+    ];
+    
+    protected $casts = [ 'array_casted' => 'array', ];
 }
 ```
 
@@ -73,6 +72,17 @@ $profile->linkedin_profile = '';  // Empty, saved as null
 $profile->array_casted = []; // Empty, saved as null
 $profile->array_not_casted = []; // Empty, saved as null
 $profile->save();
+```
+
+If you want to extend this behaviour to _all_ fields on your model, you may do so by specifying `$nullable` as `*`:
+
+```php
+class UserProfile extends Model
+{
+    use NullableFields;
+    
+    protected $nullable = '*';
+}
 ```
 
 # More information
