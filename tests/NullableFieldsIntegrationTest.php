@@ -7,6 +7,7 @@ use Illuminate\Events\Dispatcher;
 use Tests\Fakes\DateTest;
 use Tests\Fakes\Product;
 use Tests\Fakes\UserProfile;
+use Tests\Fakes\UserProfileAll;
 
 beforeAll(function () {
     $manager = new Manager();
@@ -42,6 +43,7 @@ beforeAll(function () {
         $table->timestamp('last_tested_at')->nullable()->default(null);
     });
 });
+
 it('sets nullable fields to null when saving', function () {
     $user = new UserProfile();
     $user->facebook_profile = ' ';
@@ -51,12 +53,12 @@ it('sets nullable fields to null when saving', function () {
     $user->array_not_casted = [];
     $user->save();
 
-    expect($user->facebook_profile)->toBeNull();
-    expect($user->twitter_profile)->toBe('michaeldyrynda');
-    expect($user->linkedin_profile)->toBeNull();
-    expect($user->array_casted)->toBeNull();
-    expect($user->array_not_casted)->toBeNull();
-    expect(null)->toBeNull();
+    expect($user)
+        ->facebook_profile->toBeNull()
+        ->twitter_profile->toBe('michaeldyrynda')
+        ->linkedin_profile->toBeNull()
+        ->array_casted->toBeNull()
+        ->array_not_casted->toBeNull();
 });
 it('sets nullable fields to null when mass assignment is used', function () {
     $user = UserProfile::create([
@@ -67,11 +69,29 @@ it('sets nullable fields to null when mass assignment is used', function () {
         'array_not_casted' => [],
     ]);
 
-    expect($user->facebook_profile)->toBeNull();
-    expect($user->twitter_profile)->toBe('michaeldyrynda');
-    expect($user->linkedin_profile)->toBeNull();
-    expect($user->array_casted)->toBeNull();
-    expect($user->array_not_casted)->toBeNull();
+    expect($user)
+        ->facebook_profile->toBeNull()
+        ->twitter_profile->toBe('michaeldyrynda')
+        ->linkedin_profile->toBeNull()
+        ->array_casted->toBeNull()
+        ->array_not_casted->toBeNull();
+});
+
+it('sets all empty fields to null when mass assignment is used', function () {
+    $user = UserProfileAll::create([
+        'facebook_profile' => '',
+        'twitter_profile' => 'michaeldyrynda',
+        'linkedin_profile' => ' ',
+        'array_casted' => [],
+        'array_not_casted' => [],
+    ]);
+
+    expect($user)
+        ->facebook_profile->toBeNull()
+        ->twitter_profile->toBe('michaeldyrynda')
+        ->linkedin_profile->toBeNull()
+        ->array_casted->toBeNull()
+        ->array_not_casted->toBeNull();
 });
 
 it('handles calling the nullabe fields setter manually', function () {
@@ -81,9 +101,10 @@ it('handles calling the nullabe fields setter manually', function () {
         'linkedin_profile' => '',
     ]);
 
-    expect($user->facebook_profile)->toBeNull();
-    expect($user->twitter_profile)->toBeNull();
-    expect($user->linkedin_profile)->toBeNull();
+    expect($user)
+        ->facebook_profile->toBeNull()
+        ->twitter_profile->toBeNull()
+        ->linkedin_profile->toBeNull();
 });
 
 it('handles a cast value with a mutator set', function () {
@@ -95,38 +116,38 @@ it('handles a cast value with a mutator set', function () {
 it('handles an empty cast value with a mutator set', function () {
     $product = Product::create(['name' => "mikemand's test product"]);
 
-    expect($product->amount)->toBeNull();
+    expect($product)->amount->toBeNull();
 });
 
 it('handles setting a cast value to an empty value via a mutator', function () {
     $product = Product::create(['name' => "mikemand's test product", 'amount' => '6.27']);
 
-    expect($product->amount)->not->toBeNull();
+    expect($product)->amount->not->toBeNull();
 
     $product->someCondition = true;
     $product->update(['amount' => 'this will be an empty array']);
 
-    expect($product->amount)->toBeNull();
+    expect($product)->amount->toBeNull();
 });
 
 it('doesnt munge an existing non null value on save', function () {
     $profile = UserProfile::create(['twitter_profile' => 'michaeldyrynda']);
 
-    expect($profile->twitter_profile)->toEqual('michaeldyrynda');
+    expect($profile->twitter_profile)->toBe('michaeldyrynda');
 
     $profile->save();
 
-    expect($profile->twitter_profile)->toEqual('michaeldyrynda');
+    expect($profile)->twitter_profile->toBe('michaeldyrynda');
 });
 
 it('doesnt munge an existing non null value with a mutator set on save', function () {
     $profile = UserProfile::create(['twitter_profile_mutated' => 'michaeldyrynda']);
 
-    expect($profile->twitter_profile_mutated)->toEqual('@michaeldyrynda');
+    expect($profile)->twitter_profile_mutated->toBe('@michaeldyrynda');
 
     $profile->save();
 
-    expect($profile->twitter_profile_mutated)->toEqual('@michaeldyrynda');
+    expect($profile)->twitter_profile_mutated->toBe('@michaeldyrynda');
 });
 
 it('doesnt munge a boolean false value', function () {
@@ -135,18 +156,19 @@ it('doesnt munge a boolean false value', function () {
         'boolean' => false,
     ]);
 
-    expect($user->facebook_profile)->toBeNull();
-    expect($user->boolean)->toBeFalse();
+    expect($user)
+        ->facebook_profile->toBeNull()
+        ->boolean->toBeFalse();
 });
 
 it('correctly handles empty date fields', function () {
     $date = DateTest::create(['last_tested_at' => '']);
 
-    expect($date->last_tested_at)->toBeNull();
+    expect($date)->last_tested_at->toBeNull();
 });
 
 it('correctly handles set date fields', function () {
     $date = DateTest::create(['last_tested_at' => Carbon::parse('2016-12-22 09:12:00')]);
 
-    expect((string) $date->last_tested_at)->toEqual('2016-12-22 09:12:00');
+    expect((string) $date->last_tested_at)->toBe('2016-12-22 09:12:00');
 });
