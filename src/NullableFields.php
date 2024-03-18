@@ -18,7 +18,6 @@ trait NullableFields
      */
     abstract public function getAttributes();
 
-
     /**
      * Get an attribute from the model.
      *
@@ -26,7 +25,6 @@ trait NullableFields
      * @return mixed
      */
     abstract public function getAttribute($key);
-
 
     /**
      * Determine if a set mutator exists for an attribute.
@@ -36,7 +34,6 @@ trait NullableFields
      */
     abstract public function hasSetMutator($key);
 
-
     /**
      * Get the attributes that should be converted to dates.
      *
@@ -44,13 +41,11 @@ trait NullableFields
      */
     abstract public function getDates();
 
-
     /**
      * If value is empty, return null, otherwise return the original input.
      *
-     * @param  string $value
-     * @param  null $key
-     *
+     * @param  string  $value
+     * @param  null  $key
      * @return null|string
      */
     public function nullIfEmpty($value, $key = null)
@@ -70,16 +65,13 @@ trait NullableFields
         return blank($value) ? null : $value;
     }
 
-
     /**
      * Determine whether a value is JSON castable for inbound manipulation.
      *
      * @param  string  $key
-     *
      * @return bool
      */
     abstract protected function isJsonCastable($key);
-
 
     /**
      * Boot the trait, add a saving observer.
@@ -93,7 +85,6 @@ trait NullableFields
             $model->setNullableFields();
         });
     }
-
 
     /**
      * Set empty nullable fields to null.
@@ -109,32 +100,30 @@ trait NullableFields
         }
     }
 
-
     /**
      * Get the nullable attributes of a given array.
      *
-     * @param  array $attributes
      *
      * @return array
      */
     protected function nullableFromArray(array $attributes = [])
     {
+        if ($this->nullable === '*') {
+            return $attributes;
+        }
+
         if (is_array($this->nullable) && count($this->nullable) > 0) {
             return array_intersect_key($attributes, array_flip($this->nullable));
-        } else if ($this->nullable === '*') {
-            return $attributes;
         }
 
         // Assume no fields are nullable
         return [];
     }
 
-
     /**
      * Return value of the native PHP type as a json-encoded value
      *
-     * @param  mixed $value
-     *
+     * @param  mixed  $value
      * @return string
      */
     private function setJsonCastValue($value)
@@ -142,12 +131,10 @@ trait NullableFields
         return method_exists($this, 'asJson') ? $this->asJson($value) : json_encode($value);
     }
 
-
     /**
      * Return value of the json-encoded value as a native PHP type
      *
-     * @param  mixed $value
-     *
+     * @param  mixed  $value
      * @return string
      */
     private function getJsonCastValue($value)
@@ -155,14 +142,12 @@ trait NullableFields
         return method_exists($this, 'fromJson') ? $this->fromJson($value) : json_decode($value, true);
     }
 
-
     /**
      * For the given key and value pair, determine the actual value,
      * depending on whether or not a mutator or cast is in use.
      *
      * @param  string  $key
      * @param  mixed  $value
-     *
      * @return mixed
      */
     private function fetchValueForKey($key, $value)
@@ -182,13 +167,11 @@ trait NullableFields
         return $value;
     }
 
-
     /**
      * Determine whether an array value is empty, taking into account casting.
      *
      * @param  string  $key
      * @param  array  $value
-     *
      * @return mixed
      */
     private function nullIfEmptyArray($key, $value)
