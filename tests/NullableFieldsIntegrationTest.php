@@ -7,6 +7,7 @@ use Illuminate\Events\Dispatcher;
 use Tests\Fakes\DateTest;
 use Tests\Fakes\Product;
 use Tests\Fakes\UserProfile;
+use Tests\Fakes\UserProfileAll;
 
 beforeAll(function () {
     $manager = new Manager();
@@ -72,6 +73,22 @@ it('sets nullable fields to null when mass assignment is used', function () {
     expect($user->linkedin_profile)->toBeNull();
     expect($user->array_casted)->toBeNull();
     expect($user->array_not_casted)->toBeNull();
+
+it('sets all empty fields to null when mass assignment is used', function () {
+    $user = UserProfileAll::create([
+        'facebook_profile' => '',
+        'twitter_profile' => 'michaeldyrynda',
+        'linkedin_profile' => ' ',
+        'array_casted' => [],
+        'array_not_casted' => [],
+    ]);
+
+    expect($user)
+        ->facebook_profile->toBeNull()
+        ->twitter_profile->toBe('michaeldyrynda')
+        ->linkedin_profile->toBeNull()
+        ->array_casted->toBeNull()
+        ->array_not_casted->toBeNull();
 });
 
 it('handles calling the nullabe fields setter manually', function () {
