@@ -10,13 +10,13 @@ use Tests\Fakes\UserProfile;
 use Tests\Fakes\UserProfileAll;
 
 beforeAll(function () {
-    $manager = new Manager();
+    $manager = new Manager;
     $manager->addConnection([
         'driver' => 'sqlite',
         'database' => ':memory:',
     ]);
 
-    $manager->setEventDispatcher(new Dispatcher(new Container()));
+    $manager->setEventDispatcher(new Dispatcher(new Container));
 
     $manager->setAsGlobal();
     $manager->bootEloquent();
@@ -45,7 +45,7 @@ beforeAll(function () {
 });
 
 it('sets nullable fields to null when saving', function () {
-    $user = new UserProfile();
+    $user = new UserProfile;
     $user->facebook_profile = ' ';
     $user->twitter_profile = 'michaeldyrynda';
     $user->linkedin_profile = '';
