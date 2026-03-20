@@ -41,6 +41,7 @@
     "laravel/pint": "^1.29"
   },
   "scripts": {
+    "test": "vendor/bin/pest",
     "check-style": "vendor/bin/pint --test",
     "fix-style": "vendor/bin/pint"
   }

@@ -7,22 +7,44 @@ on:
     - cron: "0 0 * * *"
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    name: Lint
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+          extensions: json, dom, curl, libxml, mbstring
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Check code style
+        run: composer check-style
+
   test:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
       matrix:
-        php: [8.4, 8.3, 8.2]
+        php: [8.4, 8.3]
         laravel: [^11.0, ^12.0]
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }}
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Cache dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.composer/cache/files
           key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
@@ -40,4 +62,4 @@ jobs:
           composer update --prefer-dist --no-interaction --no-progress
 
       - name: Execute tests
-        run: vendor/bin/pest
+        run: composer test
