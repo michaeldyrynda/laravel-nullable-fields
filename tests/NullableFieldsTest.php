@@ -5,8 +5,39 @@
  *
  * @return void
  */
+
+use Dyrynda\Database\Support\NullableFields;
+
 beforeEach(function () {
-    $this->nullable = $this->getMockForTrait('Dyrynda\Database\Support\NullableFields');
+    $this->nullable = new class
+    {
+        use NullableFields;
+
+        public function getAttributes(): array
+        {
+            return [];
+        }
+
+        public function getAttribute($key): mixed
+        {
+            return null;
+        }
+
+        public function hasSetMutator($key): bool
+        {
+            return false;
+        }
+
+        public function getDates(): array
+        {
+            return [];
+        }
+
+        protected function isJsonCastable($key): bool
+        {
+            return false;
+        }
+    };
 });
 
 it('identifies an empty string as null', function () {
